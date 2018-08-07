@@ -1,3 +1,14 @@
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+  .register('./js/service-worker.js')
+  .then(function(registration) {
+    console.log('success!', registration);
+  })
+  .catch(function(err) {
+    console.log('error', err);
+  });
+}
+
 let restaurants,
   neighborhoods,
   cuisines
@@ -186,3 +197,4 @@ addMarkersToMap = (restaurants = self.restaurants) => {
   });
 
 } 
+
