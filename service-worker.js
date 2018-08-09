@@ -10,21 +10,30 @@ const cacheFiles = [
 ];
 
 self.addEventListener('install', function(e) {
-    console.log('Installed');
+    console.log('[ServiceWorker] Installed');
     e.waitUntil(
         caches.open(cacheName).then(function(cache) {
-            console.log('Caching cacheFiles');
+            console.log('[ServiceWorker] Caching cacheFiles');
             return cache.addAll(cacheFiles);
         })
     )
 });
 
 self.addEventListener('activate', function(e) {
-    console.log('Activated');
+    console.log('[ServiceWorker] Activated');
 });
 
 self.addEventListener('fetch', function(e) {
-    console.log('Fetching', e.request);
+    console.log('[ServiceWorker] Fetching', e.request);
+
+    e.respondWith(
+        caches.match(e.request).then(function(response) {
+            if (response) {
+                console.log("[ServiceWorker] Found in cache", e.request.url);
+                return response;
+            }
+        })
+    )
 });
 
 
