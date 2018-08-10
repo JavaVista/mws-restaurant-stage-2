@@ -6,7 +6,9 @@ const cacheFiles = [
     '/css/styles.css',
     '/js/dbhelper.js',
     '/js/main.js',
-    '/js/restaurant_info.js'
+    '/js/restaurant_info.js',
+    'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js',
+    'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css'
 ];
 
 self.addEventListener('install', function(e) {
@@ -29,8 +31,12 @@ self.addEventListener('fetch', function(e) {
     e.respondWith(
         caches.match(e.request).then(function(response) {
             if (response) {
-                console.log("[ServiceWorker] Found in cache", e.request.url);
+                console.log('[ServiceWorker] Found in cache', e.request.url);
                 return response;
+            }
+            else {
+                console.log('[ServiceWorker] Not found in cache...fetching');
+                return fetch(e.request);
             }
         })
     )
