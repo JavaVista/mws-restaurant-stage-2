@@ -8,7 +8,18 @@ const cacheFiles = [
     '/js/main.js',
     '/js/restaurant_info.js',
     'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js',
-    'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css'
+    'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css',
+    '/data/restaurants.json',
+    '/img/1.jpg',
+    '/img/2.jpg',
+    '/img/3.jpg',
+    '/img/4.jpg',
+    '/img/5.jpg',
+    '/img/6.jpg',
+    '/img/7.jpg',
+    '/img/8.jpg',
+    '/img/9.jpg',
+    '/img/10.jpg'
 ];
 
 self.addEventListener('install', function(e) {
@@ -34,10 +45,32 @@ self.addEventListener('fetch', function(e) {
                 console.log('[ServiceWorker] Found in cache', e.request.url);
                 return response;
             }
-            else {
-                console.log('[ServiceWorker] Not found in cache...fetching');
-                return fetch(e.request);
-            }
+
+            console.log('[ServiceWorker] Not found in cache', e.request.url);
+         
+            const requestClone = e.request.clone();
+
+            fetch(requestClone)
+                .then(function(response) {
+                    return response;
+                    if(!response) {
+                        console.log('[ServiceWorker] No response from fetch');
+                        return response;
+                    }
+
+                    const responseClone = response.clone();
+
+                    caches.open(cacheName).then(function(cache) {
+                        console.log('[ServiceWorker] Caching:',responseClone)
+
+                        cache.put(e.request, responseClone);
+                        return response;
+                    });
+                })
+                .catch(function(err) {
+                    console.log('[ServiceWorker] Error fetching and caching new data:', err);
+                })
+            
         })
     )
 });
