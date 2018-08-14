@@ -129,6 +129,10 @@ nav h1 a {
   width: 200px;
 }
 
+.filter-options select:focus {
+  border: 4px solid orange;
+}
+
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
   background-color: #f3f3f3;
@@ -276,7 +280,6 @@ nav h1 a {
 #restaurant-hours td {
   color: #666;
 }
-
 
 @media (max-width: 768px) {
   .inside #maincontent {
